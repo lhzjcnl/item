@@ -1,0 +1,65 @@
+{extend name='main'/}
+{block name="head"}
+<link rel="stylesheet" type="text/css" href="/adminp/css/goods.css"/>
+<style>
+    #left a:nth-child(4){
+        background-color: #1f2125;
+    }
+    .sort{
+        width: 5% !important;
+    }
+    .operation{
+        width: 27% !important;
+    }
+</style>
+
+{/block}
+{block name="right"}
+    <p>
+        <a href="" >banner管理</a>
+        <span>
+            <a href="/admin/banner/create" class="icon-zengjia add">新增</a>
+        </span>
+    </p>
+    <div id="first_row" class="row">
+        <div class="sort">排序</div>
+        <div class="nav_img">图片</div>
+        <div class="name">跳转商品</div>
+        <div class="operation">操作</div>
+    </div>
+    <div class="box">
+        <div id="box_top">
+            {foreach $data as $v}
+            <div class="row">
+                <div class="sort">
+                    <div>
+                        <input type="checkbox" name="id" class="check" value="{$v->id}" />
+                        <span>{$v->sort}</span>
+                    </div>
+                </div>
+                <div class="nav_img">
+                    <img src="{$v->img}"/>
+                </div>
+                <div class="name">{$v->goodsNames()}</div>
+                <div class="operation">
+                    <a href="/admin/banner/edit?id={$v->id}">修改</a>
+                    <a href="javascript:;" onclick="del('/admin/banner/del?id={$v->id}','确认删除跳转商品为{$v->goodsNames()}的数据吗？')">删除</a>
+                    <a href="{$v->url}">查看商品</a>
+                    <a href="/">查看banner</a>
+                </div>
+            </div>
+            {/foreach}
+        </div>
+        </div>
+        <div class="box_foot">
+            <div>
+                <input type="checkbox" name="" id="check_all" value="" />
+                <span>全选</span>
+                <a href="javascript:;" id="delall" onclick="delall('/admin/banner/delall')">删除选中</a>
+                <a href="/admin/banner/create" class="icon-zengjia">新增</a>
+            </div>
+            <div>
+            </div>
+        </div>
+    </div>
+{/block}

@@ -1,0 +1,46 @@
+{extend name='main'/}
+{block name="head"}
+
+<link rel="stylesheet" type="text/css" href="/homep/css/index.css"/>
+<link rel="stylesheet" type="text/css" href="/homep/css/search.css"/>
+<style>
+	.pagination{
+		display: flex;
+		margin-bottom: 0.5rem;
+		margin-left: auto;
+	}
+	.pagination li>*{
+		display: inline-flex;
+		padding: 0.5rem 1rem;
+		background-color: #feea11;
+		margin: 0 0.2rem;
+	}
+	#pagebtn{
+		display: flex;
+		margin-left: auto;
+	}
+</style>
+{/block}
+{block name="main"}
+<div id="bodyer">
+	<p style="width: 100%;"><span>搜索内容：{$text}</span></p>
+	<div id="search_box" style="width: 100%;">
+	排序：
+	<a href="">综合</a>
+	<a href="">销量</a>
+	<a href="">价格</a>
+</div>
+	<div class="goods_cont_box clear_float">
+		{foreach $data as $v}
+		<a href="/goods?id={$v->id}">
+			<div><img src="{$v->main_img}" alt="" /></div>
+			<p>{$v->name}</p>
+			<span>{$v->price}元</span>
+		</a>
+		{/foreach}
+	</div>
+	<div id="pagebtn">
+		{$data|raw}
+	</div>
+</div>
+{/block}

@@ -1,0 +1,30 @@
+{extend name='main'/}
+{block name="head"}
+<link rel="stylesheet" type="text/css" href="/homep/css/user_order.css"/>
+<link rel="stylesheet" type="text/css" href="/homep/css/user_info.css"/>
+<link rel="stylesheet" type="text/css" href="/homep/css/login.css"/>
+<link rel="stylesheet" type="text/css" href="/homep/css/user_address.css"/>
+<link rel="stylesheet" type="text/css" href="/homep/css/shop_cart.css"/>
+<style>
+	textarea{
+		width: 85%;
+		border-radius: 10px;
+		border: 0;
+		padding-top: 0.4rem;
+		height: 4rem;
+		background-color: #ededed;
+		font-size: 1rem;
+		margin-bottom: 15px;
+		padding-left: 10px;
+		box-sizing: border-box;
+	}
+</style>
+{/block}
+{block name="left"}
+	<div id="user_info_left">
+		<a href="/user"><i class="icon-dingdan"></i>我的订单</a>
+		<a href="/user/cart"> <i class="icon-gwc"></i>购物车</a>
+		<a href="/user/address"><i class="icon-icon_3"></i>收货地址</a>
+		<a href="/user/info"><i class="icon-icon_2"></i>账号设置</a>
+	</div>
+{/block}

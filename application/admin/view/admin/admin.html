@@ -1,0 +1,55 @@
+{extend name='main'/}
+{block name="head"}
+<link rel="stylesheet" href="/adminp/bootstrap/bootstrap.min.css">
+<script src="/adminp/bootstrap/jquery-3.4.0.js"></script>
+<script src="/adminp/bootstrap/bootstrap.min.js"></script>
+    <script>
+        function del(id) {
+            if (confirm("确认删除id为"+id)){
+                $.post('/admin/delete?id='+id,function (data) {
+                    if (data==1){
+                        location=location;
+                    }
+                })
+            }
+        }
+    </script>
+<style>
+    #left a:nth-child(8){
+        background-color: #1f2125;
+    }
+    .btn{
+        color: white !important;
+    }
+</style>
+{/block}
+{block name="right"}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>用户名</th>
+            <th>身份</th>
+            <th>操作
+                (<a href="/admin/edit">添加</a>)
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $data as $d}
+        <tr>
+            <td>{$d['id']}</td>
+            <td>{$d['name']}</td>
+            <td>{$d['role']}</td>
+            <td>
+                <a type="button" href="/admin/edit?id={$d['id']}" class="btn btn-dark btn-sm">修改</a>
+                {if($d['name']!=$_COOKIE['admin_name'])}
+                <button onclick="del({$d['id']})" type="button" class="btn btn-dark btn-sm">删除</button>
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {$data|raw}
+{/block}

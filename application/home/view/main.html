@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="/homep/icon/style.css"/>
+	<link rel="stylesheet" type="text/css" href="/homep/css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="/homep/css/header.css"/>
+	<script src="/homep/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/homep/js/script.js" type="text/javascript" charset="utf-8"></script>
+    <title>商城</title>
+	<script>
+		$(function () {
+			$('#btn').click(function () {
+				let text=$('#text').val();
+				if(text!=''){
+					location='/search/text/'+text;
+				}else{
+					alert("内容不能为空");
+				}
+			})
+		})
+	</script>
+	{block name="head"}{/block}
+</head>
+<body>
+    <div id="main">
+    	<div id="header">
+			<div id="head">
+				<div id="head_left">
+					<a href="/" id="logo"><img src="/homep/images/logo.png" height="100%"/></a>
+					<i class="icon-safety"></i>
+					<span>100%正品</span>
+					<i class="icon-phonebill"></i>
+					<span>全场5折</span>
+					<i class="icon-shopping"></i>
+					<span>包邮到家</span>
+					<i class="icon-shandian"></i>
+					<span>极速退换</span>
+				</div>
+				<div id="head_right">
+					<div id="seek">
+						<input type="text" id="text" value="<?=isset($text)?$text:''?>" />
+						<button id="btn" class="icon-search"></button>
+					</div>
+					{if(isset($_COOKIE['user_name']))}
+					<a href="/user"><i class="icon-icon-test_4"></i><span>{$_COOKIE['user_name']}</span></a>
+					<a href="/logout">退出</a>
+					{else}
+					<a href="/login">登录/注册</a>
+					{/if}
+				</div>	
+			</div>	
+			<div id="nav_box">
+				<div id="nav">
+					<a href="javascript:;" id="menu_a" class="icon-icon-test"> &nbsp;&nbsp;商品分类</a>
+					{foreach $nav as $n}
+						<a href="javascript:;">{$n->name}</a>
+					{/foreach}
+					<div id="nav_content">
+						{foreach $nav as $n}
+						<div class="nav_content" style="display: flex;">
+							{foreach $n['goods'] as $goods}
+								<a href="/goods?id={$goods['id']}">
+									<img src="{$goods['img']}"/>
+									<span>{$goods['name']}</span>
+									<span>{$goods['price']}元</span>
+								</a>
+							{/foreach}
+						</div>
+						{/foreach}
+					</div>
+					<div id="menu">
+						{foreach $list as $l}
+						<a href="" class="icon-icon-test_2 text">{$l->name}</a>
+						<div class="menu_content" >
+							{foreach $l->goods as $g}
+							<div class="m_content">
+								<a href="/goods?id={$g['id']}">
+									<div><img src="{$g->img}" alt="" /></div>
+									<span>{$g->name}</span>
+								</a>
+							</div>
+							{/foreach}
+						</div>
+						{/foreach}
+					</div>
+				</div>
+			</div>
+    	</div>
+		{block name="main"}
+		<div id="bodyer">
+			{block name="left"}{/block}
+			{block name="right"}{/block}
+		</div>
+		{/block}
+		<div id="footer">
+			<p>姓名：连洪镇</p>
+			<p>电话：15013942750</p>
+			<p>微信：LHZ_NL</p>
+		</div>
+	</div>
+</body>
+</html>

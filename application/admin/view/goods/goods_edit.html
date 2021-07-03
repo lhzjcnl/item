@@ -1,0 +1,142 @@
+{extend name='main'/}
+{block name="head"}
+<link rel="stylesheet" type="text/css" href="/adminp/css/goods_add.css"/>
+<style>
+    #left a:nth-child(3){
+        background-color: #1f2125;
+    }
+</style>
+<script>
+    $(function() {
+        $('#mian_img').delegate('#add_mian_img','change',function () {
+            var a=URL.createObjectURL(this.files[0]);
+            $('#mian_img').find('.imgbox').append($('<div><img src="'+a+'"/><a href="javascript:;">×</a></div>'));
+            this.id='';
+            $('#mian_img').find('.add_box').append($('<input type="file" name="main_imgs[]" hidden id="add_mian_img" value="" />'));
+        });
+        $('#details_img').delegate('#add_details_img','change',function () {
+            var a=URL.createObjectURL(this.files[0]);
+            $('#details_img').find('.imgbox').append($('<div><img src="'+a+'"/><a href="javascript:;">×</a></div>'));
+            this.id='';
+            $('#details_img').find('.add_box').append($('<input type="file" hidden="" name="imgs[]" id="add_details_img" value="" />'));
+        })
+        $('.imgbox').delegate('a','click',function () {
+            let src=$(this).prev().attr('src');
+            let name=$(this).prev().attr('title');
+            $(this).parents('.add_box').append($('<input type="text" name="old'+name+'[]" value="'+src+'" hidden>'))
+            $(this).parent('div').remove();
+        })
+        $('#submit_a').click(function () {
+            $input=$('form').find('input[type="text"]');
+            for (val of $input){
+                if(val.value==''){
+                    alert(val.title+"不能为空");
+                    return;
+                }
+            }
+            if($('#mian_img').find('img').length>0&&$('#details_img').find('img').length>0){
+                $('#submit').click();
+            }else{
+                alert("主图和详情图至少一张")
+            }
+        })
+
+    })
+</script>
+{/block}
+{block name="right"}
+    <div id="first_row">
+        <a href=""><i class="icon-icon-test_1b"></i>返回</a>
+        修改商品
+    </div>
+    <form action="/admin/goods/update" method="post" enctype="multipart/form-data">
+        {:token()}
+        <input type="text" name="id" value="{$id}" hidden>
+        <div id="goods_info" class="box">
+            <div class="clear_float">
+                <span>标题：</span>
+                <input type="text" id="goods_title" name="name" value="{$data->name}" title="标题" />
+            </div>
+            <div id="mian_img">
+                <span>主图：</span>
+                <div class="add_box">
+                    <div class="imgbox">
+                        {foreach $data['MainImg'] as $v}
+                        <div>
+                            <img src="{$v->url}" alt="" title="main_imgs">
+                            <a href="javascript:;">×</a>
+                        </div>
+                        {/foreach}
+                    </div>
+                    <label for="add_mian_img"><i class="icon-zengjia"></i></label>
+                    <div style="display: none" >
+                        <div id="btnbox"></div>
+                    </div>
+                    <input type="file" accept=".png,.jpg" name="main_imgs[]" title="主图" hidden id="add_mian_img" value="" />
+                </div>
+            </div>
+            <div class="clear_float">
+                <span>分类：</span>
+                <select name="goods_types_id">
+                    {foreach $types as $type}
+                    <option value="{$type->id}"  <?=($type->id==$data->goods_types_id)?'selected':''  ?>>{$type->name}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="clear_float">
+                <span>排序：</span>
+                <input type="text" name="sort" value="{$data->sort}">
+            </div>
+            <div class="type_size">
+                <span><input type="text" name="style_name" value="{$data->style_name->style_name}" title="类型" placeholder="类型" />&nbsp;:</span>
+                <div class="add_box">
+                    {foreach $data->Style as $v}
+                    <div>
+                        <input type="text" name="style[]" value="{$v->style}" title="值"/>
+                    </div>
+                    {/foreach}
+                    <p>
+                        <a href="javascript:;" class="icon-zengjia"></a>
+                        <a href="javascript:;" class="icon-jianshao"></a>
+                    </p>
+                </div>
+            </div>
+            <div class="type_size">
+                <span><input type="text" name="size_name" id="" value="{$data->style_name->size_name}" title="大小" placeholder="大小" />&nbsp;:</span>
+                <div class="add_box">
+                    <div>
+                        {foreach data->Size as $v}
+                        <input type="text" name="size[]" value="{$v->size}" title="值" />
+                        {/foreach}
+                    </div>
+                    <p>
+                        <a href="javascript:;" class="icon-zengjia"></a>
+                        <a href="javascript:;" class="icon-jianshao"></a>
+                    </p>
+                </div>
+            </div>
+            <div id="details_img">
+                <span>详情：</span>
+                <div class="add_box">
+                    <div class="imgbox">
+                        {foreach $data->Img as $v}
+                        <div>
+                            <img src="{$v->url}" alt="" title="imgs">
+                            <a href="javascript:;">×</a>
+                        </div>
+                        {/foreach}
+                    </div>
+                    <label for="add_details_img"><i class="icon-zengjia"></i></label>
+                    <input type="file" hidden="" name="imgs[]" id="add_details_img" title="详情图" value="" />
+                </div>
+            </div>
+            <div id="btn_box">
+                <div>
+                    <button type="submit" id="submit" hidden></button>
+                    <a href="javascript:;" id="submit_a">保存</a>
+                    <a href="javascript:;">返回</a>
+                </div>
+            </div>
+        </div>
+    </form>
+{/block}

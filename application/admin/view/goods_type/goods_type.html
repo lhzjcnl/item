@@ -1,0 +1,82 @@
+{extend name='main'/}
+{block name="head"}
+<link rel="stylesheet" type="text/css" href="/adminp/css/goods.css"/>
+<style>
+    #left a:nth-child(2){
+        background-color: #1f2125;
+    }
+    a{
+        color: black;
+    }
+</style>
+<script>
+    // $(function () {
+    //     $('#delall').click(function () {
+    //         if(confirm("确认删除选中的数据吗？")){
+    //             var obj=$('.check:checked');
+    //             // console.log(a);
+    //             let data=[];
+    //             for (let v of obj){
+    //                 data[data.length]=v.value;
+    //             }
+    //             console.log(data);
+    //             $.post('/admin/goods_type/delall',{data:data},function (data) {
+    //                 if (data){
+    //                     alert("删除成功");
+    //                 }else{
+    //                     alert("删除出错,请重试");
+    //                 }
+    //                 location=location;
+    //             })
+    //         }
+    //     })
+    // })
+</script>
+{/block}
+{block name="right"}
+
+    <p>
+        <a href="" style="color: orange;">商品分类</a>
+        <span>
+            <input type="text" />
+            <button class="icon-search"></button>
+            <a href="/admin/goods_type/edit" class="icon-zengjia add">新增</a>
+        </span>
+    </p>
+    <div id="first_row" class="row">
+        <div class="sort">排序</div>
+        <div class="name">名称</div>
+        <div class="operation">操作</div>
+    </div>
+    <div class="box">
+        <div id="box_top">
+            {foreach $data as $k=>$v}
+           <div class="row">
+                <div class="sort">
+                    <div>
+                        <input type="checkbox" name="id" class="check" value="{$v['id']}" />
+                        <span>{$v['sort']}</span>
+                    </div>
+                </div>
+                <div class="name">{$v['name']}</div>
+                <div class="operation">
+                    <a href="/admin/goods_type/edit?id={$v['id']}">修改</a>
+                    <a href="javascript:;" onclick="del('/admin/goods_type/del?id={$v->id}','确认删除名称为{$v->name}数据吗？')">删除</a>
+                    <a href="/admin/goods/screen/type/{$v->id}">所属商品</a>
+                </div>
+            </div>
+            {/foreach}
+        </div>
+        <div class="box_foot">
+            <div>
+                <input type="checkbox" name="" id="check_all" value="" />
+                <span>全选</span>
+                <a href="javascript:;" class="delall" id="delall" onclick="delall('/admin/goods_type/delall')">删除选中</a>
+                <a href="/admin/goods_type/edit" class="icon-zengjia">新增</a>
+            </div>
+            <div>
+                {$data|raw}
+            </div>
+        </div>
+    </div>
+{/block}

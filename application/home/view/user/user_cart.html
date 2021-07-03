@@ -1,0 +1,132 @@
+{extend name='user/user_left'/}
+{block name="right"}
+<style>
+    #user_info_left a:nth-child(2){
+        color: orange;
+    }
+    .goods_info p{
+        text-overflow: -o-ellipsis-lastline;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        line-clamp: 2;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+</style>
+<script>
+    $(function () {
+        //	----------goods 选择后改变价格---------------
+        var data= JSON.parse('<?=$data?>');
+        $('.check').change(function () {
+            var cheked=$('.check:checked');
+            var chek=$('.check');
+            $('#check_all').prop('checked',chek.length==cheked.length);
+            all_price();
+        })
+        $('.number').change(function () {
+            var val=$(this).parents('.order_info').find('input[name="id[]"]').val()
+            data[val].num=this.value;
+            console.log(data);
+            all_price();
+        })
+        $('#check_all').change(function () {
+            $('.check').prop('checked',this.checked);
+            all_price();
+        })
+        function all_price() {
+            //计算总价格
+            var price=0;
+            var obj=$('.check:checked');
+            for(let i=0;i<obj.length;i++){
+                price+=data[obj[i].value].num*data[obj[i].value].price;
+            }
+            $('#all_price').html('￥'+price);
+            $('#check_leng').html('已选中'+obj.length+'件商品');
+        }
+        $('.del').click(function () {
+            if(confirm("确认删除吗？")){
+                var parents=$(this).parents('.order_info');
+                var val=parents.find('input[name="id[]"]').val()
+                $.post('/user/cart/del/'+val,function (data) {
+                    if(data){
+                        parents.remove();
+                    }
+                })
+            }
+        })
+        $('#submit').click(function () {
+            var obj=$('.check:checked');
+            if(obj.length>0){
+                var id=[];
+                var num=[];
+                for(let i=0;i<obj.length;i++){
+                    id[i]=obj[i].value;
+                    num[i]=$(obj[i]).parents('.order_info').find('.number').val();
+                }
+                $('#id').val(id+'');
+                $('#num').val(num+'');
+                $('#form').submit();
+            }else{
+                alert('请先选择商品');
+            }
+
+        })
+    })
+</script>
+<div id="user_info_right">
+    <p id="big_font">我的购物车</p>
+    <div class="first_line">
+        <p class="goods">商品</p>
+        <p class="pirce">单价</p>
+        <p class="num">数量</p>
+        <p class="total_pirce">总金额</p>
+        <p class="state"></p>
+        <p class="operation">操作</p>
+    </div>
+    <form action='/user/cart/submit' method="post" id="form" hidden>
+        <input type="text" id="id" name="id" value="" hidden>
+        <input type="text" id="num" name="num" value="" hidden>
+    </form>
+    {foreach $cart as $v}
+    <div class="order_info">
+        <div class="order_content">
+            <span>
+                <input type="checkbox" name="id[]" class="check" value="{$v->id}" />
+            </span>
+            <span><a href="/goods?id={$v->id}">查看商品</a></span>
+        </div>
+        <div class="order_goods">
+            <div class="goods_info goods">
+                <a href="/goods?id={$v->goods->id}"><img src="{$v['goods']['img']}"/></a>
+                <div>
+                    <p>{$v['goods']['name']}</p>
+                    <div>
+                        {$v['goods']['style_name']['style_name']}：{$v['goods']['style']}
+                        {$v['goods']['style_name']['size_name']}：{$v['goods']['size']}
+                    </div>
+                </div>
+            </div>
+            <div class="pirce">{$v->price}元</div>
+            <div class="num">
+<!--                <a href="" class="icon-jianshao"></a>-->
+                <input type="number" name="num" min="1" class="number" value="{$v->num}" />
+<!--                <a href="" class="icon-zengjia"></a>-->
+            </div>
+            <div class="total_pirce">{$v->num*$v->price}元</div>
+            <div class="order_state state">
+            </div>
+            <div class="order_btn operation"><a class="del" href="javascript:;">删除</a></div>
+        </div>
+    </div>
+    {/foreach}
+    <div id="cart_settlement">
+        <input type="checkbox" id="check_all" /><span>全选</span>
+        <span id="check_leng">已选中0件商品</span>
+        <a href="">删除选中商品</a>
+        <span>总金额：<span id="all_price">￥0</span></span>
+        <a href="javascript:;" id="submit">结算</a>
+    </div>
+</div>
+
+{/block}

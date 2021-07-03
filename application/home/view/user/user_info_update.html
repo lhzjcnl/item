@@ -1,0 +1,22 @@
+{extend name='user/user_left'/}
+{block name="right"}
+<style>
+    #user_info_left a:nth-child(4){
+        color: orange;
+    }
+</style>
+<div id="user_info_right">
+<div id="login_box" style="box-shadow:none">
+    <span>密码修改</span>
+    <form action="/user/save" method="post">
+        <input type="password" name="old_password" value="" placeholder="原密码"/>
+        <input type="password" name="password" value="" placeholder="密码"/>
+        <input type="password" name="repeat_password" value="" placeholder="重复密码"/>
+        <input type="submit"  id="btn" value="修改" />
+    </form>
+    <div>
+        <a href="/user">返回</a>
+    </div>
+</div>
+</div>
+{/block}

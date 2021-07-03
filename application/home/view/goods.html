@@ -1,0 +1,195 @@
+{extend name='main'/}
+{block name="head"}
+
+<link rel="stylesheet" type="text/css" href="/homep/css/goods.css"/>
+<script>
+	$(function () {
+		//	----------goods 选择后改变价格---------------
+		var price= JSON.parse('<?=$price?>');
+		console.log(price);
+		$('.goods_options p').click(function(){
+			$(this).parents('.goods_options').find('input').attr('checked',false)
+			$(this).parent().find('input').attr('checked',true)
+			let val=$('.goods_options input[checked]');
+			$('#pirce>span').html(price[val[0].value][val[1].value]+"元")
+		})
+
+	})
+	function sub() {
+		let form=$('#form');
+		form.attr('action','/user/submit/2');
+		form.submit();
+	}
+</script>
+{/block}
+{block name="main"}
+<div id="bodyer">
+	<div id="goods">
+		<div id="goods_left">
+			<div id="main_img">
+				<img src="{$data['first_main_img']}"/>
+			</div>
+			<div id="small_img">
+				{foreach $data->MainImg as $k=>$v}
+				<div><img src="{$v->url}"/></div>
+				{/foreach}
+			</div>
+		</div>
+		<div id="goods_right">
+			<form action="/user/submit/1" id="form" method="post">
+				<input type="text" name="goods_id" value="{$data['id']}" hidden>
+				<h4>{$data['name']}	</h4>
+				<div id="pirce">价格：
+					<span>{$data->FirstPrice()}元</span>
+				</div>
+				<div class="goods_options clear_float">
+					<div class="clear_float">
+						<span>{$data->StyleName()->style_name}：</span>
+						<div>
+							{foreach $data->Style as $k=>$v}
+							<label for="style{$k}">
+								<input type="radio" name="goods_styles_id" id="style{$k}" hidden="" value="{$v->id}" <?=$k==0?'checked':''?>/>
+								<p>{$v->style}</p>
+	<!--							<div>{$v->style}</div>-->
+	<!--							灰色没库存-->
+							</label>
+							{/foreach}
+						</div>
+					</div>
+				</div>
+				<div class="goods_options clear_float">
+					<div class="clear_float" id="size">
+						<span>{$data->StyleName()->size_name}：</span>
+						<div>
+							{foreach $data->Size as $k=>$v}
+							<label for="size{$k}" >
+								<input type="radio" name="goods_sizes_id" id="size{$k}" hidden="" value="{$v->id}" <?=$k==0?'checked':''?>/>
+								<p>{$v->size}</p>
+							</label>
+							{/foreach}
+						</div>
+					</div>
+				</div>
+				<div id="goods_num">
+					<span >数量：</span>
+					<div>
+						<a href="javascript:;" class="icon-jianshao"></a>
+						<input type="text" name="num" id="num" value="1" />
+						<a href="javascript:;" class="icon-zengjia"></a>
+					</div>
+				</div>
+				<div id="goods_service">
+					<div id="service_info">
+						<div>
+							<i class="icon-safety"></i>
+							<span>100%正品</span>
+						</div>
+						<div>
+							<i class="icon-selection"></i>
+							<span>7天无理由退货</span>
+						</div>
+						<div>
+							<i class="icon-shandian"></i>
+							<span>24小时内发货</span>
+						</div>
+						<div>
+							<i class="icon-phonebill"></i>
+							<span>赠送运费险</span>
+						</div>
+					</div>
+				</div>
+				<div id="btn">
+					{if($data->start==1)}
+					<button type="button" onclick="sub()"><i class="icon-cart"></i>加入购物车</button>
+					<button type="submit"><i class="icon-shopping"></i>购买</button>
+					{else}
+					<button disabled style="background-color: gray;width: 100%">商品下架中</button>
+					{/if}
+				</div>
+			</form>
+		</div>
+	</div>
+	<div id="goods_bottom">
+		<div id="goods_b_left">
+			<p>同款热销推荐</p>
+			<div id="left_info">
+				{foreach $with_goods as $goods}
+				<a href="/goods?id={$goods->id}">
+					<img src="{$goods->img}"/>
+					<span class="money">{$goods->price}元</span>
+					<p>{$goods->name}</p>
+				</a>
+				{/foreach}
+			</div>
+		</div>
+		<div id="goods_b_right">
+			<div id="info_box">
+				<a href="javascript:;" style="background-color: orange;color: white;">商品详情</a>
+				<a href="javascript:;">商品评论</a>
+				<div id="goods_info">
+					<div>
+						{foreach $data->Img as $k=>$v}
+							<img src="{$v->url}" style="width: 100%;"/>
+						{/foreach}
+					</div>
+					<div style="display: none;">
+						<div class="evaluation">
+							<div class="evaluation_user">
+								<img src="images/a3.jpg"/>
+								<span>我****我</span>
+								<div>
+									<i class="icon-shoucang_1"></i>
+									<i class="icon-shoucang_1"></i>
+									<i class="icon-shoucang_1"></i>
+									<i class="icon-shoucang_1"></i>
+									<i class="icon-shoucang_1"></i>
+								</div>
+								<span>2008.10.10</span>
+							</div>
+							<p>外观很靓，手感很棒，双曲面屏握着手感是很舒适，单手操作完全能够应用自如，屏幕效果很理想，看着比较舒适，音效是非常赞杠，运行速度完美，没有卡顿，特别是APP运行速度很快，拍照效果比以前的小米手机好多了，拍照清晰，1亿像素照片放大了也不失真，待机时间可以两天，电池容量够大，充电更快，而且还支持30W无线充电</p>
+							<div class="info_img">
+								<div class="imgx">
+									<div style="border: 1px solid orange;"><img src="images/goods (1).jpg" /></div>
+									<div><img src="images/goods (2).jpg" /></div>
+									<div><img src="images/goods (3).jpg" /></div>
+									<div><img src="images/goods (4).jpg" /></div>
+								</div>
+								<div class="imgd">
+									<img src="images/goods (1).jpg"/>
+								</div>
+							</div>
+						</div>
+						<div class="evaluation">
+							<div class="evaluation_user">
+								<img src="images/a3.jpg"/>
+								<span>我****我</span>
+								<div>
+									<i class="icon-shoucang_1"></i>
+									<i class="icon-shoucang_1"></i>
+									<i class="icon-shoucang_1"></i>
+									<i class="icon-shoucang_1"></i>
+									<i class="icon-shoucang_1"></i>
+								</div>
+								<span>2008.10.10</span>
+							</div>
+							<p>外观很靓，手感很棒，双曲面屏握着手感是很舒适，单手操作完全能够应用自如，屏幕效果很理想，看着比较舒适，音效是非常赞杠，运行速度完美，没有卡顿，特别是APP运行速度很快，拍照效果比以前的小米手机好多了，拍照清晰，1亿像素照片放大了也不失真，待机时间可以两天，电池容量够大，充电更快，而且还支持30W无线充电</p>
+							<div class="info_img">
+								<div class="imgx">
+									<div style="border: 1px solid orange;"><img src="images/goods (1).jpg" /></div>
+									<div><img src="images/goods (2).jpg" /></div>
+									<div><img src="images/goods (3).jpg" /></div>
+									<div><img src="images/goods (4).jpg" /></div>
+								</div>
+								<div class="imgd">
+									<img src="images/goods (1).jpg"/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{/block}

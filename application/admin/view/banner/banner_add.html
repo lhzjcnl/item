@@ -1,0 +1,104 @@
+{extend name='main'/}
+{block name="head"}
+<link rel="stylesheet" type="text/css" href="/adminp/css/goods_add.css"/>
+<style>
+    #left a:nth-child(4){
+        background-color: #1f2125;
+    }
+    #goods{
+        max-width: 70%;
+    }
+    #goods>*{
+        width: 100%;
+        overflow: hidden;
+    }
+</style>
+<script>
+    $(function () {
+        var goods=JSON.parse('<?=$goods?>');//将字符串重新转换成数组对象
+        $('#types').change(function () {
+            //根据商品分类的修改
+            let data="";
+            for (let g in goods[this.value]){
+                //循环遍历该分类下的商品
+                data+='<option value="'+g+'">'+goods[this.value][g]+'</option>'
+            }
+            if(data==""){
+                data="<option>无</option>"
+            }
+            $('#goods').html(data);
+        })
+        $('#add_details_img').change(function () {
+            //图片修改
+            var a=URL.createObjectURL(this.files[0]);//获取浏览器最新的缓存
+            var img=$('#img').show();
+            $('#img').find('img').attr('src',a);
+        })
+        $('#btn').click(function () {
+            var data=$('#goods_info *[name]');
+            //获取所有的name元素
+            var arr={};
+            for(let d of data){
+                if(d.value==''){
+                    alert(d.title+"不能为空");
+                    return;
+                }
+            }
+            $.post('/admin/banner/bannerGoods/'+data[1].value,function (data) {
+                if(data){
+                    $('#submit').click();
+                }else{
+                    alert("该商品已关联banner请重新选择")
+                }
+            })
+        })
+    })
+</script>
+{/block}
+{block name="right"}
+    <div id="first_row">
+        <a href=""><i class="icon-icon-test_1b"></i>返回</a>
+        添加banner
+    </div>
+    <form action="/admin/banner/save" method="post" enctype="multipart/form-data">
+        <div id="goods_info" class="box">
+            <div class="type_size">
+                <span>排序：</span>
+                <div class="add_box">
+                    <div><input type="text" name="sort" id="" value="{$count}" title="排序" /></div>
+                </div>
+            </div>
+            <div class="type_size">
+                <span>商品:</span>
+                <div class="add_box">
+                    <div>
+                        <select id="types">
+                            <option value="">分类</option>
+                            {foreach $types as $v}
+                                <option value="{$v->id}">{$v->name}</option>
+                            {/foreach}
+                        </select>
+                        <select name="goods" id="goods" title="商品">
+                            <option value="">商品</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="details_img">
+                <span>图片：</span>
+                <div class="add_box">
+                    <div class="imgbox"><div id="img" style="display: none"><img src="" alt=""></div></div>
+                    <label for="add_details_img"><i class="icon-zengjia"></i></label>
+                    <input type="file" name="img" hidden id="add_details_img" title="图片" value="" />
+                </div>
+            </div>
+            <div id="btn_box">
+                <div>
+                    <button type="submit" id="submit" hidden></button>
+                    <a href="javascript:;" id="btn">保存</a>
+                    <a href="javascript:;">返回</a>
+                </div>
+            </div>
+        </div>
+    </form>
+{/block}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="text/css" href="images/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/homep/icon/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/homep/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/homep/css/login.css"/>
+    <link rel="stylesheet" type="text/css" href="/homep/css/header.css"/>
+	<link rel="stylesheet" href="/adminp/bootstrap/bootstrap.min.css">
+	<script src="/adminp/bootstrap/jquery-3.4.0.js"></script>
+	<script src="/adminp/bootstrap/bootstrap.min.js"></script>
+    <title>商城</title>
+</head>
+<body>
+    <div id="main">
+    	<div id="header">
+			<div id="head">
+				<div id="head_left">
+					<a href="index.html" id="logo"><img src="/homep/images/logo.png" height="100%"/></a>
+				</div>
+			</div>	
+    	</div>
+    	<div id="bodyer">
+			{if(isset($err))}
+			<div class="alert alert-warning" role="alert">
+				{$err}
+			</div>
+			{/if}
+    		<div id="login_box">
+    			<span>用户注册</span>
+    			<form action="/toreg" method="post">
+					{:token('token')}
+    				<input type="text" name="name" id="user" value="" placeholder="用户名" />
+	    			<input type="password" name="password" value="" placeholder="密码"/>
+	    			<input type="password" name="repeat_password"  value="" placeholder="重复密码"/>
+	    			<input type="submit"  id="btn" value="注册" />
+    			</form>
+    			<div>
+    				<a href="/login">返回登录</a>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+</body>
+</html>

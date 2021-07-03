@@ -1,0 +1,165 @@
+{extend name='main'/}
+{block name="head"}
+<link rel="stylesheet" type="text/css" href="/adminp/css/goods_add.css"/>
+<style>
+    #left a:nth-child(3){
+        background-color: #1f2125;
+    }
+    .box1{
+        display: flex;
+        flex-flow: column;
+        width: 32%;
+        border: 1px solid lightgray;
+        padding: 1rem;
+        margin-right: 1%;
+    }
+    .box1 .title,.box1 .content{
+        display: flex;
+        justify-content: space-between;
+    }
+    .box1 .title>*,.box1 .content>*{
+        width: 39%;
+    }
+    .box1 .title>*:first-child,.box1 .content>*:first-child{
+        width: 20%;
+    }
+    .title{
+        display: flex;
+    }
+    .title>span{
+        flex: 2;
+    }
+    .title>span:last-child,.title>span:first-child{
+        flex: 1;
+    }
+    .first{
+        display: flex;
+        justify-content: space-between;
+    }
+    .first>span{
+        width: 30%;
+    }
+    .first>div{
+        width: 68%;
+        display: flex;
+        align-items: center;
+    }
+    .first>div>span{
+        margin: 0 0.3rem;
+    }
+    .first .input{
+        width: 60%;
+    }
+    .content{
+        margin: 0.3rem 0;
+        display: flex;
+    }
+    .content>*{
+        margin-right: 0.2rem;
+    }
+    .content>span,.content>a{
+        flex: 1;
+    }
+    .content>input{
+        flex: 2;
+    }
+    .box2{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .content>a{
+        text-align: center;
+        padding: 5px 10px;
+        background-color: orange;
+        color: white !important;
+        border-radius: 5px;
+    }
+</style>
+<script>
+    $(function () {
+        $('#submit_a').click(function () {
+            $input=$('input');
+            for (let i of $input){
+                if(i.value==""){
+                    $(i).focus();
+                    alert("输入框内容不能为空");
+                    return;
+                }
+            }
+            $('#submit').click()
+        })
+    })
+    function save(obj,id){
+        let input=$(obj).parent().find('input');
+        let arr= {};
+        let k=0;
+        let idarr=input[2].value.split('_');
+        for (i of input){
+            if(i.value!=''){
+                arr[i.name]=i.value;
+            }else{
+                $(i).focus();
+                alert('内容不能为空');
+            }
+        }
+        arr['id']=id;
+        console.log(arr);
+        $.post('/admin/goods/toNumSave',arr,function (data) {
+            alert('修改成功');
+        })
+    }
+</script>
+{/block}
+{block name="right"}
+    <div id="first_row">
+        <a href=""><i class="icon-icon-test_1b"></i>返回</a>
+        商品库存和价格
+    </div>
+    <form action="/admin/goods/toNumSave" method="post" enctype="multipart/form-data">
+        {:token()}
+        <div id="goods_info" class="box">
+            <div class="box2">
+                <input type="text" name="id" hidden value="{$id}">
+                {foreach $goods_style as $v}
+                <div class="box1">
+                    <div class="first">
+                        <span>{$style_name['style_name']}：{$v['style']}</span>
+                        <!--                        <div>-->
+                        <!--                            <input type="checkbox">-->
+                        <!--                            <span>统一价格</span>-->
+                        <!--                            <input type="text" class="input" placeholder="统一价格">-->
+                        <!--                        </div>-->
+                    </div>
+                    <div class="title">
+                        <span>{$style_name['size_name']}</span>
+                        <span>库存</span>
+                        <span>价格</span>
+                        <span>操作</span>
+                    </div>
+                    {foreach $goods_size as $v2}
+                        <div class="content">
+                            <span>{$v2['size']}</span>
+                            {if isset($goodsPriceNum[$v['id']][$v2['id']])}
+                                <input type="text" name="num_{$v['id']}_{$v2['id']}" value="{$goodsPriceNum[$v['id']][$v2['id']]['num']}" placeholder="库存">
+                                <input type="text" name="price_{$v['id']}_{$v2['id']}" value="{$goodsPriceNum[$v['id']][$v2['id']]['price']}" placeholder="价格">
+                            {else}
+                                <input type="text" name="num_{$v['id']}_{$v2['id']}" value="" placeholder="库存">
+                                <input type="text" name="price_{$v['id']}_{$v2['id']}" value="" placeholder="价格">
+                            {/if}
+                            <input type="text" name="key[]"hidden value="{$v['id']}_{$v2['id']}">
+                            <a href="javascript:;" onclick="save(this,{$id})">保存</a>
+                        </div>
+                    {/foreach}
+                </div>
+                {/foreach}
+            </div>
+            <div id="btn_box">
+                <div>
+                    <button type="submit" id="submit" hidden></button>
+                    <a href="javascript:;" id="submit_a">全部保存</a>
+                    <a href="javascript:;">返回</a>
+                </div>
+            </div>
+        </div>
+    </form>
+{/block}

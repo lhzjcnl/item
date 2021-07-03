@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/homep/icon/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/homep/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/homep/css/user_address.css"/>
+    <link rel="stylesheet" type="text/css" href="/homep/css/user_order.css"/>
+    <link rel="stylesheet" type="text/css" href="/homep/css/shop_cart.css"/>
+    <script src="/homep/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/homep/js/script.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        $(function () {
+            $('#address_box .btn1').click(function(){
+                $(this).parents('#address_box').find('input').prop('checked',false);
+                let a=$(this).parents('label').find('input').prop('checked',true);
+            })
+        })
+        function del(id) {
+            if(confirm('确定删除吗?')){
+                $.post('/user/address/del?id='+id,function () {
+                    location=location;
+                })
+            }
+        }
+    </script>
+    <style>
+        #address_box label{
+            display: flex;
+            width: 20%;
+        }
+        #address_box .box{
+            width: 100% !important;
+        }
+        a{
+            text-decoration: none;
+        }
+        #main{
+            background-color: inherit;
+        }
+        #nei{
+            width: 98%;
+            margin: 0 auto;
+        }
+        #cart_settlement button{
+            background-color: orange;
+            color: white;
+            border: 0;
+            height: 100%;
+            font-size: 1.1rem;
+            padding: 0 0.4rem;
+        }
+        #address_box input:checked+.box{
+            border-color: orange !important;
+        }
+
+    </style>
+</head>
+<body>
+<div id='main'>
+    <div id="nei">
+        <form action="/user/buy" method="post">
+            <div>
+                <p id="big_font">收货地址</p>
+                <div id="address_box">
+                    {foreach $data as $k=>$v}
+                    <label for=address_id{$k}">
+                        <input type="radio" id=address_id{$k}" <?=$k==0?'checked':''?> hidden name="address_id" value="{$v->id}">
+                        <div class="box">
+                            <a href="javascript:;" class="btn1">
+                                <p>{$v->name}</p>
+                                <div>{$v->phone}</div>
+                                <div>{$v->address}</div>
+                            </a>
+                            <div>
+                                <a href="/user/address/edit?id={$v->id}"><span>修改</span></a>
+                                <a href="javascript:;" onclick="del({$v->id})"><span>删除</span></a>
+                            </div>
+                        </div>
+                    </label>
+                    {/foreach}
+                </div>
+            </div>
+            <div class="first_line">
+                <p class="goods">商品</p>
+                <p class="pirce">单价</p>
+                <p class="num">数量</p>
+                <p class="total_pirce">总金额</p>
+            </div>
+            {foreach $goods as $g}
+            <div class="order_info">
+                <div class="order_goods">
+                    <div class="goods_info goods">
+                        <a href="/goods?id={$g->id}"><img src="{$g->img}"/></a>
+                        <div>
+                            <p>{$g->name}</p>
+                            <div>
+                                {$g['style_name']['style_name']}：{$g['style']}
+                                {$g['style_name']['size_name']}：{$g['size']}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pirce">{$g->price}元</div>
+                    <div class="num">
+                        <!--                        <a href="" class="icon-zengjia"></a>-->
+                        <!--                        <input type="text" name="num" id="num" value="1" />-->
+                        <!--                        <a href="" class="icon-jianshao"></a>-->
+                        {$g->num}
+                    </div>
+                    <div class="total_pirce">{$g->total_price}元</div>
+                    <div class="order_state state">
+                    </div>
+                </div>
+            </div>
+
+            {/foreach}
+            <div id="cart_settlement">
+                <span>总金额：<span>{$all_price}元</span></span>
+                <button type="submit">货到付款</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

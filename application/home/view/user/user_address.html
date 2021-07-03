@@ -1,0 +1,42 @@
+{extend name='user/user_left'/}
+{block name="right"}
+<style>
+    #user_info_left a:nth-child(3){
+        color: orange;
+    }
+</style>
+<script>
+    function del(id) {
+        if(confirm('确定删除吗?')){
+            $.post('/user/address/del?id='+id,function () {
+                location=location;
+            })
+        }
+    }
+</script>
+<div id="user_info_right">
+    <p id="big_font">收货地址</p>
+    <div id="address_box" class="clear_float">
+
+        {foreach $data as $v}
+        <div class="box">
+            <a href="/user/address/edit?id={$v->id}">
+                <p>{$v->name}</p>
+                <div>{$v->phone}</div>
+                <div>{$v->address}</div>
+            </a>
+            <div>
+                <a href="/user/address/edit?id={$v->id}"><span>修改</span></a>
+                <a href="javascript:;" onclick="del({$v->id})"><span>删除</span></a>
+            </div>
+        </div>
+        {/foreach}
+        <div class="box">
+            <a href="/user/address/edit">
+                <i class="icon-zengjia"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+{/block}

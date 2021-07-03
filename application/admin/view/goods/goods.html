@@ -1,0 +1,174 @@
+{extend name='main'/}
+{block name="head"}
+<link rel="stylesheet" type="text/css" href="/adminp/css/goods.css"/>
+<style>
+    #left a:nth-child(3){
+        background-color: #1f2125;
+    }
+    #top_a>a:nth-child({$start+1}){
+        color: orange;
+    }
+    .sort{
+        width: 5% !important;
+    }
+    .operation{
+        width: 27% !important;
+    }
+</style>
+<script>
+    $(function () {
+        $('#search').click(function () {
+            let name=$('#sea_val').val();
+            if(name!=''){
+                location='/admin/goods/screen/name/'+name;
+            }else{
+                location='/admin/goods';
+            }
+        })
+        $('.start').change(function () {
+            console.log(this.value);
+            $.post('/admin/goods/change_start',{'id':this.id,'start':this.value},function (data) {
+            })
+        })
+        $('#goods_types').change(function () {
+            var arr=location.pathname.split('/');
+            for (let i in arr){
+                if(arr[i]=='type'){
+                    let num=parseInt(arr[++i]);
+                    if(typeof(num)=="number"&&!isNaN(num)){
+                        if(this.value!=''){
+                            arr[i]=this.value;
+                        }else{
+                            arr.splice(--i,2);
+                        }
+                        break;
+                    }
+                }else if(i==arr.length-1){
+                    arr[arr.length]='type';
+                    arr[arr.length]=this.value;
+                    break;
+                }
+            }
+            var src=arr.join('/');
+            location=src;
+        })
+    })
+
+    function del(id,name){
+        $('#modal_content').html(name);
+        $('#data_id').val(id);
+    }
+
+    function delall2(url) {
+        var obj=$('.check:checked');
+        if(obj.length<1){
+            alert("请先选择要删除的数据");
+        }else if(confirm("确认删除选中的数据吗？")){
+            let data=[];
+            for (let v of obj){
+                data[data.length]=v.value;
+            }
+            $.post(url,{data:data},function (data) {
+                alert(data);
+                // location=location;
+            })
+        }
+    }
+</script>
+{/block}
+{block name="right"}
+    <p id="top_a">
+        <a href="/admin/goods/screen" >所有商品</a>
+        <a href="/admin/goods/screen/start/1">出售商品</a>
+        <a href="/admin/goods/screen/start/2">下架商品</a>
+        <span>
+            {if($name!='')}
+            <a href="/admin/goods/screen">返回</a>
+            {/if}
+            <select id="goods_types">
+                <option value="">全部</option>
+                {foreach $types as $v}
+                    <option value="{$v->id}" <?=($v->id==$type)?'selected':''?> >{$v->name}</option>
+                {/foreach}
+            </select>
+            &nbsp;&nbsp;&nbsp;
+            <input type="text" id="sea_val" placeholder="名称" value="{$name}"/>
+            <button class="icon-search" id="search" type="submit"></button>
+            <a href="/admin/goods/add" class="icon-zengjia">新增</a>
+        </span>
+    </p>
+    <div id="first_row" class="row">
+        <div class="sort">排序</div>
+        <div class="img">图片</div>
+        <div class="name">名称</div>
+        <div class="price">价格</div>
+        <div class="num">库存</div>
+        <div class="state">状态</div>
+        <div class="operation">操作</div>
+    </div>
+    <div class="box">
+        <div id="box_top">
+            {foreach $data as $k=>$v}
+            <div class="row">
+                <div class="sort">
+                    <div>
+                        <input type="checkbox" class="check" name="id" value="{$v->id}" />
+                        <span>{$v->sort}</span>
+                    </div>
+                </div>
+                <div class="img">
+                    <img src="{$v->MainImg(1)['url']}"/>
+                </div>
+                <div class="name">{$v->name}</div>
+                <div class="price">{$v->FirstPrice()}</div>
+                <div class="num">{$v->num()}</div>
+                <div class="state">
+                    <select name="start" class="start" id="{$v->id}">
+                        <option value="1">出售</option>
+                        <option value="2" <?=$v->start==2?'selected':''?>>下架</option>
+                    </select>
+                </div>
+                <div class="operation">
+                    <a href="/admin/goods/edit?id={$v->id}">修改</a>
+                    <a href="javascript:;" class="del" onclick="del({$v->id},'{$v->name}')" data-toggle="modal" data-target="#exampleModal">删除</a>
+                    <a href="/goods?id={$v->id}">查看商品</a>
+                    <a href="/admin/goods/numPrice/{$v->id}">库存和价格</a>
+                </div>
+            </div>
+            {/foreach}
+        </div>
+        <div class="box_foot">
+            <div>
+                <input type="checkbox" name="" id="check_all" value="" />
+                <span>全选</span>
+                <a href="javascript:;" class="delall" id="delall" onclick="delall2('/admin/goods/delall')">删除选中</a>
+                <a href="/admin/goods/add" class="icon-zengjia">新增</a>
+            </div>
+            <div>
+                {$data|raw}
+            </div>
+        </div>
+    </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_title">确认删除名称为以下内容的数据吗？</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal_content">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <form action="/admin/goods/del" method="post">
+                    <input type="text" hidden value="" id="data_id" name="id">
+                    <button type="submit" class="btn btn-primary" >确认</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

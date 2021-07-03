@@ -1,0 +1,72 @@
+{extend name='main'/}
+{block name="head"}
+<link rel="stylesheet" type="text/css" href="/adminp/css/goods_add.css"/>
+<style>
+    #left a:nth-child(5){
+        background-color: #1f2125;
+    }
+    #goods{
+        max-width: 70%;
+    }
+    #goods>*{
+        width: 100%;
+        overflow: hidden;
+    }
+</style>
+<script>
+$(function () {
+    $('#btn').click(function () {
+        let data=$('#types').val();
+        if(data==''){
+            alert("请先选择商品分类");
+            return;
+        }
+        $.post('/admin/goods_list/GoodsList/'+data+'?id={$data->id}',function (data) {
+            console.log(data);
+            if(data){
+                $('#submit').click();
+            }else{
+                alert("该分类导航已存在请重新选择");
+            }
+        })
+    })
+})
+</script>
+{/block}
+{block name="right"}
+    <div id="first_row">
+        <a href=""><i class="icon-icon-test_1b"></i>返回</a>
+        修改导航
+    </div>
+    <form action="/admin/goods_list/update" method="post">
+        <div id="goods_info" class="box">
+            <div class="type_size">
+                <span>排序：</span>
+                <div class="add_box">
+                    <input type="text" name="id" value="{$data->id}" hidden>
+                    <div><input type="text" name="sort" id="" value="{$data->sort}" title="排序" /></div>
+                </div>
+            </div>
+            <div class="type_size">
+                <span>分类:</span>
+                <div class="add_box">
+                    <div>
+                        <select id="types" name="types">
+                            <option value="">选择</option>
+                            {foreach $types as $v}
+                                <option value="{$v->id}" <?=($v->id==$data->goods_types_id)?'selected':''?>>{$v->name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="btn_box">
+                <div>
+                    <button type="submit" id="submit" hidden></button>
+                    <a href="javascript:;" id="btn">保存</a>
+                    <a href="javascript:;">返回</a>
+                </div>
+            </div>
+        </div>
+    </form>
+{/block}

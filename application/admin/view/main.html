@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/adminp/icon/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/adminp/css/style.css"/>
+    <link rel="stylesheet" href="/adminp/bootstrap/bootstrap.min.css">
+    <script src="/adminp/bootstrap/jquery-3.4.0.js"></script>
+    <script src="/adminp/bootstrap/bootstrap.min.js"></script>
+    <script src="/adminp/js/jquery.uploadifive.js"></script>
+    <script src="/adminp/js/script.js"></script>
+    <title>后台管理</title>
+    <style>
+        #right a{
+            color: black ;
+            text-decoration: none;
+        }
+        #right a:hover{
+            text-decoration: none;
+            color: blue ;
+        }
+        .box_foot div:last-child a,.operation>a{
+            color: white !important;
+        }
+    </style>
+    {block name='head'}{/block}
+</head>
+<body>
+<div id="main">
+    <div id="header">
+        <div id="logo">
+            <img src="/adminp/images/logo.png"/>
+            <span>后台管理</span>
+        </div>
+        <div>
+            {if(isset($_COOKIE['admin_name']))}
+            <span>{$_COOKIE['admin_name']}</span>
+            &nbsp;&nbsp;&nbsp;
+            <a href="/admin/logout">退出登录</a>
+            {else}
+            <a href="/login">登录</a>
+            {/if}
+        </div>
+    </div>
+    <div id="bodyer">
+        <div id="left">
+            <a href="/admin" >订单管理</a>
+            <a href="/admin/goods_type" >商品分类</a>
+            <a href="/admin/goods/screen" >商品管理</a>
+            <a href="/admin/banner">banner</a>
+            <a href="/admin/nav">导航管理</a>
+            <a href="/admin/goods_list">商品列表</a>
+            <a href="">用户管理</a>
+            <a href="/admin/admin">管理员</a>
+            <a href="">网站信息</a>
+        </div>
+        <div id="right">
+            {if(isset($err))}
+            <div class="alert alert-warning" role="alert">
+                {$err}
+            </div>
+            {/if}
+            {block name='right'}{/block}
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{extend name='user/user_left'/}
+{block name="right"}
+<style>
+    #user_info_left a:nth-child(4){
+        color: orange;
+    }
+</style>
+
+<div id="user_info_right">
+    <p id="big_font">账号设置</p>
+    <div class="user_info">
+        <p><i class="icon-yonghu"></i><span>用户名：{$_COOKIE['user_name']}</span></p>
+        <div class="order_btn"><a href="">修改</a></div>
+    </div>
+    <div class="user_info">
+        <p><i class="icon-shouji"></i><span>手机号码：未绑定</span></p>
+        <div class="order_btn"><a href="">修改</a></div>
+    </div>
+    <div class="user_info">
+        <p><i class="icon-youxiang"></i><span>邮箱：未绑定</span></p>
+        <div class="order_btn"><a href="">修改</a></div>
+    </div>
+    <div class="user_info">
+        <p><i class="icon-mima"></i><span>账号密码</span></p>
+        <div class="order_btn"><a href="/user/update">修改</a></div>
+    </div>
+
+</div>
+{/block}

@@ -1,0 +1,47 @@
+{extend name='main'/}
+{block name="head"}
+
+<link rel="stylesheet" type="text/css" href="/homep/css/index.css"/>
+{/block}
+{block name="main"}
+<div id="box">
+	<div id="banner">
+		<div id="slide_img">
+			{foreach $banner as $v}
+			<a href="{$v['url']}"><img src="{$v['img']}"></a>
+			{/foreach}
+			<a href="{$first['url']}"><img src="{$first['img']}"></a>
+		</div>
+		<a href="javascript:;" class="icon-icon-test_1"></a>
+		<a href="javascript:;" class="icon-icon-test_2"></a>
+		<div id="dot_box">
+			{foreach $banner as $v}
+				<a href="javascript:;" <?=($v==$first)?'style="background-color: orange;"':''?>></a>
+			{/foreach}
+		</div>
+	</div>
+</div>
+<div id="bodyer">
+	<div id="goods_list">
+		<div class="goods">
+			<div class="goods_text">
+				<h3>手机</h3>
+				<a href="javascript:;" class="icon-icon-test_2">查看全部</a>
+			</div>
+			<div class="goods_cont">
+				<div class="goods_cont_box clear_float">
+
+					{foreach $goods2 as $v}
+					<a href="/goods?id={$v['id']}">
+						<div><img src="{$v['main_img']}" /></div>
+						<p title="{$v['name']}">{$v['name']}</p>
+						<span>{$v['price']}元</span>
+					</a>
+					{/foreach}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{/block}

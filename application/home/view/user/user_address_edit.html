@@ -1,0 +1,26 @@
+{extend name='user/user_left'/}
+{block name="right"}
+<style>
+    #user_info_left a:nth-child(3){
+        color: orange;
+    }
+</style>
+<div id="user_info_right">
+<div id="login_box" style="box-shadow:none">
+    <span><?=isset($data)?'修改':'添加'?>地址</span>
+    <form action="/user/address/save" method="post">
+        <input type="text" name="users_id" value="{$users_id}" hidden />
+        {if(isset($data->id))}
+        <input type="text" name="id" value="{$data->id}" hidden />
+        {/if}
+        <input type="text" required name="name" maxlength="5" minlength="3" value="<?=isset($data->name)?$data->name:''?>" placeholder="收货人"/>
+        <input type="text" required name="phone" maxlength="11" minlength="11" value="<?=isset($data->phone)?$data->phone:''?>" placeholder="手机号码"/>
+        <textarea name="address" required maxlength="30" minlength="10" placeholder="收货地址"><?=isset($data->address)?$data->address:''?></textarea>
+        <input type="submit"  id="btn" value="保存"/>
+    </form>
+    <div>
+        <a href="/user/address">返回</a>
+    </div>
+</div>
+</div>
+{/block}
