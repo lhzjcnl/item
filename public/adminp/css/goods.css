@@ -1,0 +1,67 @@
+#first_row{
+	border: 0;	
+}
+#first_row>div{
+	margin: auto 0;
+	padding: 0;
+}
+.row{
+	display: flex;
+	padding: 0 20px;
+	font-size: 0.9rem;
+	box-sizing: border-box;
+	width: 100%;
+	margin: 0 !important;
+	border-bottom: 1px solid lightgray;
+}
+
+.row>div{
+	width: 10%;
+	padding: 5px 0;
+	margin: auto 0;
+	box-sizing: border-box;
+}
+.row>.sort>input{
+	margin: auto 0;
+}
+.row>.operation{
+	width: 22%;
+}
+.row>.price,.row>.num,.row>.state{
+	width: 6%;
+	text-align: center;
+}
+.row>.name{
+	width: 40%;
+}
+.row>.img{
+	text-align: center;
+}
+.row>.img>img{
+	width: 80%;
+}
+.row>.sort>div>.sort_text{
+	margin-left: 5px;
+	width: 50%;
+}
+.row>.sort>input{
+	margin: auto 0;
+}
+.row>.operation{
+	text-align: center;
+}
+.row>.operation>a{
+	padding: 3px 8px;
+	color: white;	
+	border-radius: 5px;
+}
+.row>.operation>a{
+	background-color: orange;
+}
+.nav_img{
+	width: 26% !important;
+	text-align: center;
+}
+.nav_img>img{
+	width: 80%;
+}

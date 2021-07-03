@@ -1,0 +1,157 @@
+form{
+	height: calc(100% - 35px);
+}
+.box{
+	height: 100%;
+	overflow: auto;
+}
+#first_row{
+	display: block;
+	text-align: center;
+	line-height: 35px;
+	font-weight: bold;
+	padding: 0;
+}
+#first_row>a{
+	float: left;
+	font-weight: normal;
+	display: flex;
+}
+#first_row>a>i{
+	margin: auto 0;
+}
+#goods_info{
+	padding: 10px;
+	box-sizing: border-box;
+}
+#goods_info input{
+	height: 35px;
+	padding-left: 5px;
+	box-sizing: border-box;
+	border: 1px solid lightgray;
+	border-radius: 5px;
+}
+#goods_info span{
+	height: 35px;
+	line-height: 35px;
+}
+#goods_info>div{
+	display: flex;
+	margin: 10px 0;
+}
+#goods_info>div>span{
+	width: 5%;
+}
+#goods_info>div>#goods_title{
+	width: 95%;
+}
+#mian_img>span{
+	line-height: 100px;
+	white-space: nowrap;
+}
+#mian_img>.add_box>.imgbox>div,#mian_img>.add_box>label{
+	float: left;
+	width: 100px;
+	height: 100px;
+	margin: 5px;
+}
+#mian_img>.add_box>.imgbox>div>img{
+	width: 100%;
+	height: 100%;
+}
+.add_box>.imgbox>div{
+	position: relative;
+}
+.add_box>.imgbox>div>a{
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 1rem;
+	line-height: 1rem;
+}
+.add_box>.imgbox>div>a:hover{
+	color: red !important;
+}
+#details_img>span{
+	line-height: 200px;
+	white-space: nowrap;
+}
+#details_img .imgbox>div,#details_img>.add_box>label{
+	float: left;
+	min-width: 200px;
+	width: auto;
+	height: 200px;
+	margin: 5px;
+	display: inline-flex;
+	border: 1px solid lightgray;
+}
+#details_img .imgbox>div>img{
+	height: 100%;
+	margin: 0 auto;
+}
+.add_box>label{
+	display: inline-flex;
+	border: 1px solid lightgray;
+}
+.add_box>label>i{
+	margin: auto;
+	color: lightgray;
+	font-size: 25px;
+}
+.add_box>label:hover>i{
+	color:black;
+}
+.type_size>span>input{
+	width: 80%;
+}
+.type_size>div{
+	line-height: 35px;
+}
+.add_box{
+	width: 95%;
+}
+.add_box>div,.add_box>p{
+	float: left;
+	display: inline-block;
+	margin-right: 5px;
+	margin-bottom: 5px;
+}	
+.add_box>div>input{
+	width: 100px;
+}
+#goods_info #btn_box{
+	margin-top: 20px;
+}
+#btn_box>div{
+	margin: auto;
+}
+#btn_box>div>a{
+	padding: 5px 10px;
+	background-color: orange;
+	color: white;
+	border-radius: 5px;	
+	margin-right: 20px;
+}
+#img_box{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	background-color: rgba(0,0,0,0.5);
+	display: flex;
+	overflow: auto;
+}
+#img_box>a{
+	position: fixed;
+	right: 40px;
+	top: 20px;
+	font-size: 30px;
+	color: white;
+}
+#img_box>a:hover{
+	color: red;
+}
+#img_box>img{
+	max-width: 80%;
+	margin: auto;
+}

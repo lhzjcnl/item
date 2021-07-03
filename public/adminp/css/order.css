@@ -1,0 +1,65 @@
+.order>p{
+	background-color: rgba(188,188,188,0.4);
+	height: 35px;
+	display: flex;
+	padding: 0 20px;
+	font-size: 0.9rem;
+	box-sizing: border-box;
+}
+#first_row>div,.order>p>*{
+	text-align: center;
+	margin: auto 0;
+}
+.goods{
+	width: 40%;
+}
+.row>div:not(.goods){
+	width: 10%;
+}
+.order{
+	margin: 10px 0;
+}
+
+.order>div{
+	display: flex;
+	padding: 10px 20px;
+	font-size: 0.8rem;
+	border: 1px solid lightgray;
+}
+.order>p>span{
+	margin-right: 20px;
+}
+.order>p>a{
+	margin-left: auto;
+	width: 10%;
+	text-align: center;
+}
+.order .goods{
+	display: flex;
+}
+.order .goods>a>img{
+	width: 60px;
+	border: 1px solid lightgray;
+}
+.order .goods>div{
+	padding-left:20px;
+}
+.order .goods>div>p>span{
+	color: darkgray;
+	margin-right: 10px;
+}
+.order .goods>div>p:first-of-type{
+	margin-bottom: 10px;
+}
+.order>div>div:not(.goods):not(.receiving_info){
+	text-align: center;
+	padding-top: 20px;
+}
+.row>.operation>a{
+	color: white;
+	min-width: 80px;
+	padding: 8px 0;
+	display: inline-block;
+	background-color: orange;
+	border-radius: 8px;
+}
